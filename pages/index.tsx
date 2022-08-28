@@ -1,7 +1,11 @@
 import type { NextPage } from 'next';
 import Head from 'next/head';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import { useTranslation } from 'next-i18next';
 
 const Home: NextPage = () => {
+  const { t } = useTranslation();
+
   return (
     <div className='container'>
       <Head>
@@ -12,10 +16,18 @@ const Home: NextPage = () => {
         />
       </Head>
       <div className='p-5 grid place-items-center'>
-        <span className='text-2xl'>My Nextjs Project</span>
+        <span className='text-2xl'>{t('title1')}</span>
       </div>
     </div>
   );
 };
+
+export async function getStaticProps({ locale }: { locale: string }) {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale)),
+    },
+  };
+}
 
 export default Home;
